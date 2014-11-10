@@ -135,3 +135,13 @@ map  <F3> :set cursorcolumn!<Bar>set cursorline!<CR>
 " Tell Nerd tree to ignore backup files, you can add more
 " file types to ignor here...
 let NERDTreeIgnore=['\.orig$','\.bak$','\.svn$']
+
+" Send more characters for redraws
+set ttyfast
+
+" Enable mouse use in all modes
+set mouse=a
+
+" Set this to the name of your terminal that supports mouse codes.
+" Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+set ttymouse=xterm2
