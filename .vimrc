@@ -10,6 +10,7 @@ set ignorecase
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+set mouse=a
 
 "KeyMaps---------------------------------------
 autocmd FileType javascript noremap <buffer> djk<c-f> :call JsBeautify()<cr>
