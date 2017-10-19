@@ -3,14 +3,25 @@ syntax on
 filetype on
 filetype plugin indent on
 set number
-set ts=4
+set ts=2
 set nocompatible
 set incsearch
 set ignorecase
 set expandtab
 set shiftwidth=2
 set softtabstop=2
-set mouse=a
+set clipboard=unnamedplus
+set paste
+set go+=a
+set nowrap
+
+"Prevent refresh glitches
+set ttyfast
+au FileWritePost * :redraw!
+au TermResponse * :redraw!
+au TextChanged * :redraw!
+au QuickFixCmdPre * :redraw!
+au QuickFixCmdPost * :redraw!
 
 "KeyMaps---------------------------------------
 autocmd FileType javascript noremap <buffer> djk<c-f> :call JsBeautify()<cr>
@@ -23,6 +34,14 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+map <S-tab> :bp<CR>
+map <tab>   :bn<CR>
+map <C-t>   :bd<CR>
+
+set backupdir=/tmp/
+set directory=/tmp/
+set undodir=/tmp/
 
 "NeoBundle Scripts-----------------------------
 if has('vim_starting')
@@ -62,6 +81,7 @@ NeoBundle 'vim-scripts/The-NERD-Commenter'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'editorconfig/editorconfig-vim'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -79,6 +99,10 @@ NeoBundleCheck
 
 "Plugins Settings------------------------------
 let g:syntastic_check_on_open=1
+let g:syntastic_javascript_checkers = ['standard']
+autocmd bufwritepost *.js silent !standard-format -w %
+set autoread
+
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
 
@@ -109,4 +133,4 @@ let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)"
+map <Leader>k <Plug>(easymotion-k)
