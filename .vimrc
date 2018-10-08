@@ -10,24 +10,18 @@ set ignorecase
 set expandtab
 set shiftwidth=2
 set softtabstop=2
-set clipboard=unnamedplus
-set paste
-set go+=a
 set nowrap
-
-"Prevent refresh glitches
-set ttyfast
-au FileWritePost * :redraw!
-au TermResponse * :redraw!
-au TextChanged * :redraw!
-au QuickFixCmdPre * :redraw!
-au QuickFixCmdPost * :redraw!
+set encoding=utf-8
+set fileencoding=utf-8
+set noswapfile
+"set term=xterm-color
+set mouse=a
 
 "KeyMaps---------------------------------------
-autocmd FileType javascript noremap <buffer> djk<c-f> :call JsBeautify()<cr>
+autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<cr>
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-:imap ;; <Esc> 
+:imap ;; <Esc>
 autocmd InsertLeave * if expand('%') != '' | update | endif
 
 map <C-j> <C-W>j
@@ -35,13 +29,10 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-map <S-tab> :bp<CR>
-map <tab>   :bn<CR>
-map <C-t>   :bd<CR>
-
-set backupdir=/tmp/
-set directory=/tmp/
-set undodir=/tmp/
+map <Esc>[A <Up>
+map <Esc>[B <Down>
+map <Esc>[C <Right>
+map <Esc>[D <Left>
 
 "NeoBundle Scripts-----------------------------
 if has('vim_starting')
@@ -50,11 +41,11 @@ if has('vim_starting')
   endif
 
   " Required:
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  set runtimepath+=/Users/vivienripoche/.vim/bundle/neobundle.vim/
 endif
 
 " Required:
-call neobundle#begin(expand('~/.vim/bundle'))
+call neobundle#begin(expand('/Users/vivienripoche/.vim/bundle'))
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -70,9 +61,8 @@ NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle "mattn/emmet-vim"
+NeoBundle 'mattn/emmet-vim'
 NeoBundle 'marijnh/tern_for_vim'
 NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'einars/js-beautify'
@@ -81,7 +71,9 @@ NeoBundle 'vim-scripts/The-NERD-Commenter'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'mxw/vim-jsx'
 NeoBundle 'editorconfig/editorconfig-vim'
+NeoBundle 'vim-syntastic/syntastic'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -98,13 +90,8 @@ NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
 "Plugins Settings------------------------------
-let g:syntastic_check_on_open=1
-let g:syntastic_javascript_checkers = ['standard']
-autocmd bufwritepost *.js silent !standard-format -w %
-set autoread
-
-let g:ycm_add_preview_to_completeopt=0
-let g:ycm_confirm_extra_conf=0
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_confirm_extra_conf = 0
 
 set completeopt-=preview
 
@@ -117,6 +104,16 @@ map  <F1> :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.orig$','\.bak$','\.svn$', '\.git$']
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_full_redraws = 1
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
 
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key
