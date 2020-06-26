@@ -36,8 +36,8 @@ map <Esc>[B <Down>
 map <Esc>[C <Right>
 map <Esc>[D <Left>
 
-vmap <C-x> :!pbcopy<CR>  
-vmap <C-c> :w !pbcopy<CR><CR> 
+vmap <C-x> :!pbcopy<CR>
+vmap <C-c> :w !pbcopy<CR><CR>
 
 inoremap jj <esc>
 inoremap jk <esc>
@@ -76,9 +76,8 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'mxw/vim-jsx'
 Plugin 'editorconfig/editorconfig-vim'
-Plugin 'vim-syntastic/syntastic'
 Plugin 'ap/vim-css-color'
-Plugin 'prettier/vim-prettier'
+Plugin 'dense-analysis/ale'
 
 call vundle#end()
 filetype plugin indent on
@@ -102,15 +101,12 @@ let NERDTreeIgnore=['\.orig$','\.bak$','\.svn$', '\.git$']
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_full_redraws = 1
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['prettier', 'eslint'],
+\}
+let g:ale_fix_on_save = 1
+nmap <leader>d <Plug>(ale_fix)
 
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key
