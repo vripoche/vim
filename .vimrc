@@ -77,7 +77,7 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'mxw/vim-jsx'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'ap/vim-css-color'
-Plugin 'dense-analysis/ale'
+Plugin 'w0rp/ale'
 
 call vundle#end()
 filetype plugin indent on
@@ -101,11 +101,11 @@ let NERDTreeIgnore=['\.orig$','\.bak$','\.svn$', '\.git$']
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier', 'eslint'],
-\}
+let g:ale_fixers = {}
+let g:ale_fixers.javascript = ['eslint']
+let g:ale_linters = {'javascript': ['eslint']}
 let g:ale_fix_on_save = 1
+
 nmap <leader>d <Plug>(ale_fix)
 
 " Bi-directional find motion
