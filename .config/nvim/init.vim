@@ -69,4 +69,4 @@ set wildignore+=*/node_modules/*
 set ignorecase
 set smartcase
 set path=/Volumes/Workspaces/botify-report/**
-set clipboard+=unnamed
+set clipboard=unnamed
