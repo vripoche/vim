@@ -8,16 +8,13 @@ call plug#begin()
   Plug 'MunifTanjim/nui.nvim'
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
-  Plug 'github/copilot.vim'
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'connorholyday/vim-snazzy'
   Plug 'neovim/nvim-lspconfig'
-  Plug 'williamboman/mason-lspconfig.nvim'
-  Plug 'williamboman/mason.nvim'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-path'
-  Plug 'stevearc/conform.nvim'
+  Plug 'github/copilot.vim'
 call plug#end()
 
 set termguicolors
@@ -38,7 +35,6 @@ set noswapfile
 lua <<EOF
 require'colorizer'.setup()
 require("chatgpt").setup({})
-require("mason").setup()
 local cmp = require'cmp'
 require'cmp'.setup{
   sources = {
@@ -55,16 +51,37 @@ require'cmp'.setup{
     ['<CR>'] = cmp.mapping.confirm({ select = true })
   }
 }
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require'lspconfig'.biome.setup{
-  capabilities = capabilities,
-}
-require("conform").setup({
-  javascript = { "biome" },
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_format = "fallback",
-  },
+vim.lsp.enable('biome')
+-- enabled the Biome LSP.
+
+-- Whenever an LSP attaches
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+		if not client then
+			return
+		end
+
+		-- When the client is Biome, add an automatic event on
+		-- save that runs Biome's "source.fixAll.biome" code action.
+		-- This takes care of things like JSX props sorting and
+		-- removing unused imports.
+		if client.name == "biome" then
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("BiomeFixAll", { clear = true }),
+				callback = function()
+					vim.lsp.buf.code_action({
+						context = {
+							only = { "source.fixAll.biome" },
+							diagnostics = {},
+						},
+						apply = true,
+					})
+				end,
+			})
+		end
+	end,
 })
 EOF
 
